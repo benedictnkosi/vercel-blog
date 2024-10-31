@@ -24,19 +24,13 @@ type Props = {
 };
 
 const Blog: React.FC<Props> = (props) => {
-  if (
-    typeof window !== "undefined" &&
-    window.location.hostname.includes("lethabo")
-  ) {
-    console.log("hi lethabo");
-  } else {
-    console.log("hi not " + window.location.hostname);
-  }
+  const [hostname, setHostname] = React.useState("");
+  setHostname(window.location.hostname);
 
   return (
     <Layout>
       <div className="page">
-        <h1>Public Feed</h1>
+        <h1>Public Feed {hostname} </h1>
         <main>
           {props.feed.map((post) => (
             <div key={post.id} className="post">
