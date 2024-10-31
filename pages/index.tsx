@@ -24,6 +24,13 @@ type Props = {
 };
 
 const Blog: React.FC<Props> = (props) => {
+  if (
+    typeof window !== "undefined" &&
+    window.location.hostname.includes("lethabo")
+  ) {
+    console.log("hi lethabo");
+  }
+
   return (
     <Layout>
       <div className="page">
