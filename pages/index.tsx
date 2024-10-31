@@ -29,6 +29,8 @@ const Blog: React.FC<Props> = (props) => {
     window.location.hostname.includes("lethabo")
   ) {
     console.log("hi lethabo");
+  } else {
+    console.log("hi not " + window.location.hostname);
   }
 
   return (
