@@ -3,8 +3,12 @@ import { GetStaticProps } from "next";
 import Layout from "../components/Layout";
 import Post, { PostProps } from "../components/Post";
 import prisma from "../lib/prisma";
+import { GetServerSideProps } from "next";
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const hostname = context.req.headers.host;
+
+  // Fetch data from your database
   const feed = await prisma.post.findMany({
     where: { published: true },
     include: {
@@ -13,24 +17,23 @@ export const getStaticProps: GetStaticProps = async () => {
       },
     },
   });
+
   return {
-    props: { feed },
-    revalidate: 10,
+    props: { feed, hostname },
   };
 };
 
 type Props = {
   feed: PostProps[];
+  hostname: string;
 };
 
 const Blog: React.FC<Props> = (props) => {
-  const [hostname, setHostname] = React.useState("");
-  setHostname(window.location.hostname);
-
   return (
     <Layout>
       <div className="page">
-        <h1>Public Feed {hostname} </h1>
+        <h1>Public Feed </h1>
+        <p>Hostname: {props.hostname}</p>
         <main>
           {props.feed.map((post) => (
             <div key={post.id} className="post">
